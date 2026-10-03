@@ -1,0 +1,45 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the paper below."
+title: "NAMVIS: Next-Scale Autoregressive Multi-View Image Synthesis"
+type: software
+license: MIT
+repository-code: "https://github.com/corl-team/namvis"
+url: "https://corl-team.github.io/namvis/"
+authors:
+  - family-names: Khafizov
+    given-names: Ramil
+    affiliation: Applied AI Institute
+  - family-names: Statsenko
+    given-names: Ilya
+    affiliation: T-Tech
+  - family-names: Rakhimov
+    given-names: Ruslan
+    affiliation: T-Tech
+  - family-names: Komarichev
+    given-names: Artem
+    affiliation: Applied AI Institute
+  - family-names: Wonka
+    given-names: Peter
+    affiliation: KAUST
+  - family-names: Burnaev
+    given-names: Evgeny
+    affiliation: "Applied AI Institute, AXXX"
+preferred-citation:
+  type: conference-paper
+  title: "NAMVIS: Next-Scale Autoregressive Multi-View Image Synthesis"
+  authors:
+    - family-names: Khafizov
+      given-names: Ramil
+    - family-names: Statsenko
+      given-names: Ilya
+    - family-names: Rakhimov
+      given-names: Ruslan
+    - family-names: Komarichev
+      given-names: Artem
+    - family-names: Wonka
+      given-names: Peter
+    - family-names: Burnaev
+      given-names: Evgeny
+  collection-title: "Advances in Neural Information Processing Systems"
+  year: 2026
+  url: "https://openreview.net/forum?id=dTzafRJOTR"

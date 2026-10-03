@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+*.log
+.DS_Store
+.venv/
+.cache/
+
+/weights/
+/data/
+/wandb/
+/trackio_logs/
+/checkpoints/
+
+/inference_grid*
+/inference_results*
+/outputs*
+/local_output*
