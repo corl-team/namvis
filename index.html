@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>NAMVIS: Next-Scale Autoregressive Multi-View Image Synthesis</title>
+    <meta name="description" content="Project page for NAMVIS, a next-scale autoregressive framework for zero-shot multi-view novel view synthesis." />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="NAMVIS: Next-Scale Autoregressive Multi-View Image Synthesis" />
+    <meta property="og:description" content="A next-scale autoregressive framework for zero-shot multi-view novel view synthesis (NeurIPS 2026)." />
+    <meta property="og:url" content="https://corl-team.github.io/namvis/" />
+    <meta property="og:image" content="https://corl-team.github.io/namvis/figures/architecture_clean.png" />
+    <meta property="og:image:width" content="1573" />
+    <meta property="og:image:height" content="1000" />
+    <meta property="og:image:alt" content="NAMVIS architecture overview" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image:alt" content="NAMVIS architecture overview" />
+    <link rel="stylesheet" href="styles.css?v=59" />
+  </head>
+  <body>
+    <header class="hero">
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <h1>NAMVIS</h1>
+          <p class="subtitle">Next-Scale Autoregressive Multi-View Image Synthesis</p>
+          <p class="authors">Ramil Khafizov<sup>1</sup>, Ilya Statsenko<sup>2</sup>, Ruslan Rakhimov<sup>2</sup>, Artem Komarichev<sup>1</sup>, Peter Wonka<sup>3</sup>, Evgeny Burnaev<sup>1,4</sup></p>
+          <p class="affiliations"><sup>1</sup> Applied AI Institute · <sup>2</sup> T-Tech · <sup>3</sup> KAUST · <sup>4</sup> AXXX</p>
+          <p class="venue">NeurIPS 2026</p>
+          <nav class="hero-links" aria-label="Project resources">
+            <a class="template-button paper-button" href="https://openreview.net/forum?id=dTzafRJOTR" target="_blank" rel="noopener noreferrer">
+              <svg class="button-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 3.75h7l4 4v12.5H7z"/><path d="M14 3.75v4h4M10 12h5m-5 3h5"/></svg>
+              <span>Paper</span>
+            </a>
+            <button class="template-button pending-button" type="button" disabled aria-label="arXiv link coming soon">
+              <svg class="button-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 6.5h16v3H4zM5.5 9.5v10h13v-10M9 13h6"/></svg>
+              <span>arXiv</span><span class="button-note">Soon</span>
+            </button>
+            <a class="template-button code-button" href="https://github.com/corl-team/namvis" target="_blank" rel="noopener noreferrer" aria-label="NAMVIS code on GitHub">
+              <svg class="button-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m8.5 7-5 5 5 5m7-10 5 5-5 5m-3-12-2 14"/></svg>
+              <span>Code</span>
+            </a>
+            <a class="template-button dataset-button" href="https://huggingface.co/datasets/smileyenot983/objaversexl_sketchfab_pmap" target="_blank" rel="noopener noreferrer" aria-label="Dataset Part 1: ObjaverseXL Sketchfab dataset on Hugging Face" title="ObjaverseXL Sketchfab dataset">
+              <svg class="button-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.66 3.58 3 8 3s8-1.34 8-3V5M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3"/></svg>
+              <span>Dataset Part 1</span>
+            </a>
+            <a class="template-button dataset-button" href="https://huggingface.co/datasets/smileyenot983/objaversexl_github6.5_pmap" target="_blank" rel="noopener noreferrer" aria-label="Dataset Part 2: ObjaverseXL GitHub 6.5 dataset on Hugging Face" title="ObjaverseXL GitHub 6.5 dataset">
+              <svg class="button-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.66 3.58 3 8 3s8-1.34 8-3V5M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3"/></svg>
+              <span>Dataset Part 2</span>
+            </a>
+            <a class="template-button checkpoint-button" href="https://huggingface.co/smileyenot983/NAMVIS" target="_blank" rel="noopener noreferrer" aria-label="NAMVIS checkpoints on Hugging Face" title="NAMVIS model checkpoints">
+              <svg class="button-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3v12m-5-5 5 5 5-5M4 16v4h16v-4"/></svg>
+              <span>Checkpoints</span>
+            </a>
+          </nav>
+        </div>
+
+        <section class="hero-teaser" aria-label="Sparse input views and generated novel views">
+          <div class="teaser-columns">
+            <span>Input views</span><span></span><span>Generated novel view</span>
+          </div>
+          <div class="teaser-stage">
+            <div class="teaser-mode teaser-featured" aria-hidden="true">
+              <article class="teaser-example">
+                <div class="teaser-inputs">
+                  <img src="images_teaser/0a426b0dea53487082d034208e2b3015/0000.webp" alt="Input view 1 of example 1" />
+                  <img src="images_teaser/0a426b0dea53487082d034208e2b3015/0001.webp" alt="Input view 2 of example 1" />
+                </div>
+                <span class="teaser-arrow" aria-hidden="true">→</span>
+                <div class="teaser-generated">
+                  <video src="video_teaser/0a426b0dea53487082d034208e2b3015/orbit_flythrough.mp4" poster="images_teaser/0a426b0dea53487082d034208e2b3015/0002.webp" muted loop playsinline preload="none"></video>
+                </div>
+              </article>
+            </div>
+            <div class="teaser-mode teaser-compact" aria-hidden="true">
+              <div class="teaser-compact-rows">
+                <article class="teaser-example">
+                  <div class="teaser-inputs">
+                    <img src="images_teaser/0a426b0dea53487082d034208e2b3015/0000.webp" alt="Input view 1 of example 1" />
+                    <img src="images_teaser/0a426b0dea53487082d034208e2b3015/0001.webp" alt="Input view 2 of example 1" />
+                  </div>
+                  <span class="teaser-arrow" aria-hidden="true">→</span>
+                  <div class="teaser-generated">
+                    <video src="video_teaser/0a426b0dea53487082d034208e2b3015/orbit_flythrough.mp4" poster="images_teaser/0a426b0dea53487082d034208e2b3015/0002.webp" muted loop playsinline preload="none"></video>
+                  </div>
+                </article>
+              <article class="teaser-example">
+                <div class="teaser-inputs">
+                  <img src="images_teaser/0bcbe949e6714aac9a196998200f7007/0000.webp" alt="Input view 1 of example 2" />
+                  <img src="images_teaser/0bcbe949e6714aac9a196998200f7007/0001.webp" alt="Input view 2 of example 2" />
+                </div>
+                <span class="teaser-arrow" aria-hidden="true">→</span>
+                <div class="teaser-generated">
+                  <video src="video_teaser/0bcbe949e6714aac9a196998200f7007/orbit_flythrough.mp4" poster="images_teaser/0bcbe949e6714aac9a196998200f7007/0002.webp" muted loop playsinline preload="none"></video>
+                </div>
+              </article>
+              <article class="teaser-example">
+                <div class="teaser-inputs">
+                  <img src="images_teaser/1b936fb17a154be68eed3d86efbcc9c9/0000.webp" alt="Input view 1 of example 3" />
+                  <img src="images_teaser/1b936fb17a154be68eed3d86efbcc9c9/0001.webp" alt="Input view 2 of example 3" />
+                </div>
+                <span class="teaser-arrow" aria-hidden="true">→</span>
+                <div class="teaser-generated">
+                  <video src="video_teaser/1b936fb17a154be68eed3d86efbcc9c9/orbit_flythrough.mp4" poster="images_teaser/1b936fb17a154be68eed3d86efbcc9c9/0002.webp" muted loop playsinline preload="none"></video>
+                </div>
+              </article>
+              </div>
+            </div>
+          </div>
+        </section>
+        <p class="tldr"><strong>TL;DR:</strong> Given sparse posed views, NAMVIS autoregressively generates consistent novel views at unseen camera poses.</p>
+        <section class="five-row-teaser" aria-labelledby="five-row-teaser-title">
+          <h2 id="five-row-teaser-title">More qualitative examples</h2>
+          <div class="teaser-rows" id="qualitative-rows">
+            <article class="teaser-row">
+              <div class="teaser-inputs">
+                <img src="hero_teaser/object-2-frog-input-1.png" alt="Frog input view 1" />
+                <img src="hero_teaser/object-2-frog-input-2.png" alt="Frog input view 2" />
+              </div>
+              <span class="teaser-arrow" aria-hidden="true">→</span>
+              <div class="teaser-outputs">
+                <img src="hero_teaser/object-2-frog-view-1.png" alt="Frog NAMVIS-generated view 1" />
+                <img src="hero_teaser/object-2-frog-view-2.png" alt="Frog NAMVIS-generated view 2" />
+                <img src="hero_teaser/object-2-frog-view-3.png" alt="Frog NAMVIS-generated view 3" />
+                <img src="hero_teaser/object-2-frog-view-4.png" alt="Frog NAMVIS-generated view 4" />
+                <img src="hero_teaser/object-2-frog-view-5.png" alt="Frog NAMVIS-generated view 5" />
+              </div>
+            </article>
+            <article class="teaser-row">
+              <div class="teaser-inputs">
+                <img src="hero_teaser/object-1-loader-input-1.png" alt="Loader input view 1" />
+                <img src="hero_teaser/object-1-loader-input-2.png" alt="Loader input view 2" />
+              </div>
+              <span class="teaser-arrow" aria-hidden="true">→</span>
+              <div class="teaser-outputs">
+                <img src="hero_teaser/object-1-loader-view-1.png" alt="Loader NAMVIS-generated view 1" />
+                <img src="hero_teaser/object-1-loader-view-2.png" alt="Loader NAMVIS-generated view 2" />
+                <img src="hero_teaser/object-1-loader-view-3.png" alt="Loader NAMVIS-generated view 3" />
+                <img src="hero_teaser/object-1-loader-view-4.png" alt="Loader NAMVIS-generated view 4" />
+                <img src="hero_teaser/object-1-loader-view-5.png" alt="Loader NAMVIS-generated view 5" />
+              </div>
+            </article>
+            <article class="teaser-row">
+              <div class="teaser-inputs">
+                <img src="hero_teaser/object-3-peashooter-input-1.png" alt="Peashooter input view 1" />
+                <img src="hero_teaser/object-3-peashooter-input-2.png" alt="Peashooter input view 2" />
+              </div>
+              <span class="teaser-arrow" aria-hidden="true">→</span>
+              <div class="teaser-outputs">
+                <img src="hero_teaser/object-3-peashooter-view-1.png" alt="Peashooter NAMVIS-generated view 1" />
+                <img src="hero_teaser/object-3-peashooter-view-2.png" alt="Peashooter NAMVIS-generated view 2" />
+                <img src="hero_teaser/object-3-peashooter-view-3.png" alt="Peashooter NAMVIS-generated view 3" />
+                <img src="hero_teaser/object-3-peashooter-view-4.png" alt="Peashooter NAMVIS-generated view 4" />
+                <img src="hero_teaser/object-3-peashooter-view-5.png" alt="Peashooter NAMVIS-generated view 5" />
+              </div>
+            </article>
+            <article class="teaser-row">
+              <div class="teaser-inputs">
+                <img src="hero_teaser/object-4-chest-input-1.png" alt="Treasure chest input view 1" />
+                <img src="hero_teaser/object-4-chest-input-2.png" alt="Treasure chest input view 2" />
+              </div>
+              <span class="teaser-arrow" aria-hidden="true">→</span>
+              <div class="teaser-outputs">
+                <img src="hero_teaser/object-4-chest-view-1.png" alt="Treasure chest NAMVIS-generated view 1" />
+                <img src="hero_teaser/object-4-chest-view-2.png" alt="Treasure chest NAMVIS-generated view 2" />
+                <img src="hero_teaser/object-4-chest-view-3.png" alt="Treasure chest NAMVIS-generated view 3" />
+                <img src="hero_teaser/object-4-chest-view-4.png" alt="Treasure chest NAMVIS-generated view 4" />
+                <img src="hero_teaser/object-4-chest-view-5.png" alt="Treasure chest NAMVIS-generated view 5" />
+              </div>
+            </article>
+            <article class="teaser-row">
+              <div class="teaser-inputs">
+                <img src="hero_teaser/object-5-car-input-1.png" alt="Car input view 1" />
+                <img src="hero_teaser/object-5-car-input-2.png" alt="Car input view 2" />
+              </div>
+              <span class="teaser-arrow" aria-hidden="true">→</span>
+              <div class="teaser-outputs">
+                <img src="hero_teaser/object-5-car-view-1.png" alt="Car NAMVIS-generated view 1" />
+                <img src="hero_teaser/object-5-car-view-2.png" alt="Car NAMVIS-generated view 2" />
+                <img src="hero_teaser/object-5-car-view-3.png" alt="Car NAMVIS-generated view 3" />
+                <img src="hero_teaser/object-5-car-view-4.png" alt="Car NAMVIS-generated view 4" />
+                <img src="hero_teaser/object-5-car-view-5.png" alt="Car NAMVIS-generated view 5" />
+              </div>
+            </article>
+          </div>
+          <button class="qualitative-toggle" type="button" aria-controls="qualitative-rows" aria-expanded="false">Show 3 more examples ↓</button>
+        </section>
+      </div>
+    </header>
+
+    <main>
+      <section class="section method-overview-section" id="method">
+        <div class="method-overview">
+          <div class="method-copy">
+            <h2>How it works</h2>
+            <p class="method-intro">NAMVIS tokenizes the source views and generates target-view tokens coarse-to-fine, with camera geometry injected into attention at every scale.</p>
+          </div>
+          <div class="method-layout">
+            <figure class="paper-figure method-figure">
+              <a href="figures/architecture_clean.png" target="_blank" rel="noreferrer"><img src="figures/architecture_clean.png" alt="NAMVIS architecture overview" /></a>
+              <figcaption>NAMVIS predicts target views autoregressively, refining view-conditioned tokens from coarse to fine.</figcaption>
+            </figure>
+            <div class="method-points">
+              <div class="method-point">
+                <h3>Multi-scale ProPE</h3>
+                <p>Projective pose encoding injects the source and target camera transformations into target-view self-attention and source-to-target cross-attention at every generation scale.</p>
+              </div>
+              <div class="method-point">
+                <h3>Dual-path conditioning</h3>
+                <p>A pooled source representation provides global conditioning, while dense, geometry-aware cross-attention preserves appearance details from the input views.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <section class="section wide-section" id="competitors">
+        <div class="section-heading centered-heading has-subtitle">
+          <!-- <p class="eyebrow">Competitor Sweep</p> -->
+          <h2>Comparison with prior methods</h2>
+        </div>
+        <p class="section-copy centered-copy">All methods are evaluated on the same source observations and target camera for direct visual comparison.</p>
+        <div class="comparison-board two-three-board">
+          <div class="two-three-header"><span class="input-header">Input view</span><span>Zero-1-to-3</span><span>Zero-1-to-3 XL</span><span>SyncDreamer</span><span>EscherNet</span><span class="namvis-header">NAMVIS</span><span>GT</span></div>
+
+          <div class="two-three-row">
+            <img src="inference_results/gso1b/BUILD_A_ZOO/input/0.png" alt="BUILD_A_ZOO source view" />
+            <img src="namvis_competitors/zero123/gso/BUILD_A_ZOO/gen/3.png" alt="Zero-1-to-3 BUILD_A_ZOO generated view" />
+            <img src="namvis_competitors/zero123_xl/gso/BUILD_A_ZOO/gen/3.png" alt="Zero-1-to-3-XL BUILD_A_ZOO generated view" />
+            <img src="namvis_competitors/syncdreamer/gso/BUILD_A_ZOO/gen/0003.png" alt="SyncDreamer BUILD_A_ZOO generated view" />
+            <img src="namvis_competitors/eschernet/gso/BUILD_A_ZOO/gen/3.png" alt="EscherNet BUILD_A_ZOO generated view" />
+            <img src="inference_results/gso1b/BUILD_A_ZOO/gen/3.png" alt="NAMVIS BUILD_A_ZOO generated view" />
+            <img class="reference" src="inference_results/gso1b/BUILD_A_ZOO/gt/3.png" alt="BUILD_A_ZOO ground truth view" />
+          </div>
+
+          <div class="two-three-row">
+            <img src="inference_results/oo3d1b/backpack_022/input/0.png" alt="backpack_022 source view" />
+            <img src="namvis_competitors/zero123/oo3d/backpack_022/gen/3.png" alt="Zero-1-to-3 backpack_022 generated view" />
+            <img src="namvis_competitors/zero123_xl/oo3d/backpack_022/gen/3.png" alt="Zero-1-to-3-XL backpack_022 generated view" />
+            <img src="namvis_competitors/syncdreamer/oo3d/backpack_022/gen/0003.png" alt="SyncDreamer backpack_022 generated view" />
+            <img src="namvis_competitors/eschernet/oo3d/backpack_022/gen/3.png" alt="EscherNet backpack_022 generated view" />
+            <img src="inference_results/oo3d1b/backpack_022/gen/3.png" alt="NAMVIS backpack_022 generated view" />
+            <img class="reference" src="inference_results/oo3d1b/backpack_022/gt/3.png" alt="backpack_022 ground truth view" />
+          </div>
+
+          
+          <div class="two-three-row">
+            <img src="inference_results/gso1b/3D_Dollhouse_Swing/input/0.png" alt="3D_Dollhouse_Swing source view" />
+            <img src="namvis_competitors/zero123/gso/3D_Dollhouse_Swing/gen/3.png" alt="Zero-1-to-3 3D_Dollhouse_Swing generated view" />
+            <img src="namvis_competitors/zero123_xl/gso/3D_Dollhouse_Swing/gen/3.png" alt="Zero-1-to-3-XL 3D_Dollhouse_Swing generated view" />
+            <img src="namvis_competitors/syncdreamer/gso/3D_Dollhouse_Swing/gen/0003.png" alt="SyncDreamer 3D_Dollhouse_Swing generated view" />
+            <img src="namvis_competitors/eschernet/gso/3D_Dollhouse_Swing/gen/3.png" alt="EscherNet 3D_Dollhouse_Swing generated view" />
+            <img src="inference_results/gso1b/3D_Dollhouse_Swing/gen/3.png" alt="NAMVIS 3D_Dollhouse_Swing generated view" />
+            <img class="reference" src="inference_results/gso1b/3D_Dollhouse_Swing/gt/3.png" alt="3D_Dollhouse_Swing ground truth view" />
+          </div>
+
+        </div>
+      </section>
+
+      <section class="section" id="results">
+        <div class="section-heading centered-heading has-subtitle">
+          <!-- <p class="eyebrow">Quantitative Results</p> -->
+          <h2>Quantitative comparison</h2>
+        </div>
+        <p class="section-copy centered-copy results-takeaway"><em>Better perceptual quality and faster inference</em></p>
+        <div class="table-wrap">
+          <table class="metrics-table summary-table">
+            <thead><tr><th>Method</th><th>PSNR ↑</th><th>LPIPS ↓</th><th>Time ↓</th></tr></thead>
+            <tbody>
+              <tr><td>Zero-1-to-3</td><td>16.935</td><td>0.209</td><td>2.6s</td></tr>
+              <tr><td>Zero-1-to-3 XL</td><td>17.199</td><td>0.194</td><td>2.6s</td></tr>
+              <tr><td>SyncDreamer</td><td>17.698</td><td>0.203</td><td>16.6s</td></tr>
+              <tr><td>EscherNet</td><td><span class="runner-up">18.574</span></td><td><span class="runner-up">0.157</span></td><td><span class="runner-up">2.1s</span></td></tr>
+              <tr class="highlight-row"><td>NAMVIS 1B</td><td>21.766</td><td>0.102</td><td>0.6s</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="caption">PSNR and LPIPS are averaged across Objaverse, GSO, and OmniObject3D (OO3D). Time is seconds per target view in the 1-to-1 setting.</p>
+        <details class="full-results">
+          <summary>Full quantitative results</summary>
+          <div class="table-wrap">
+            <table class="metrics-table">
+              <colgroup>
+                <col style="width: 18%" />
+                <col span="9" style="width: 8%" />
+                <col style="width: 10%" />
+              </colgroup>
+              <thead>
+                <tr><th rowspan="2">Method</th><th colspan="3">Objaverse</th><th colspan="3">GSO</th><th colspan="3">OO3D</th><th rowspan="2">Time</th></tr>
+                <tr><th>PSNR</th><th>SSIM</th><th>LPIPS</th><th>PSNR</th><th>SSIM</th><th>LPIPS</th><th>PSNR</th><th>SSIM</th><th>LPIPS</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Zero-1-to-3</td><td>19.097</td><td>0.816</td><td>0.152</td><td>15.614</td><td>0.749</td><td>0.257</td><td>16.094</td><td>0.768</td><td>0.219</td><td>2.6s</td></tr>
+                <tr><td>Zero-1-to-3 XL</td><td>19.341</td><td><span class="runner-up">0.827</span></td><td><span class="runner-up">0.136</span></td><td>15.936</td><td>0.747</td><td><span class="runner-up">0.236</span></td><td>16.320</td><td>0.767</td><td>0.209</td><td>2.6s</td></tr>
+                <tr><td>SyncDreamer</td><td><span class="runner-up">19.368</span></td><td>0.826</td><td>0.156</td><td>16.961</td><td>0.781</td><td>0.246</td><td>16.766</td><td><span class="runner-up">0.793</span></td><td>0.207</td><td>16.6s</td></tr>
+                <tr><td>EscherNet</td><td>19.078</td><td>0.816</td><td>0.147</td><td><span class="runner-up">18.878</span></td><td><span class="runner-up">0.799</span></td><td><span class="runner-up">0.156</span></td><td><span class="runner-up">17.767</span></td><td>0.780</td><td><span class="runner-up">0.167</span></td><td><span class="runner-up">2.1s</span></td></tr>
+                <tr class="highlight-row"><td>NAMVIS 1B</td><td>22.485</td><td>0.861</td><td>0.091</td><td>21.715</td><td>0.843</td><td>0.111</td><td>21.098</td><td>0.845</td><td>0.104</td><td>0.6s</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="caption">Results are averaged over nine source-target configurations: 1-to-1, 1-to-2, 1-to-3, 2-to-1, 2-to-2, 2-to-3, 3-to-1, 3-to-2, and 3-to-3 at 256 × 256 resolution.</p>
+        </details>
+      </section>
+
+
+      <section class="section wide-section" id="renders">
+        <div class="section-heading centered-heading">
+          <!-- <p class="eyebrow">3D Renders</p> -->
+          <h2>Generated views as turntable videos</h2>
+        </div>
+        <div class="render-grid">
+          <figure class="video-card"><video src="mp4/003ebdf86df345d39dc166563229fb85_interpolated.mp4" poster="mp4/posters/003ebdf86df345d39dc166563229fb85_interpolated.webp" muted loop playsinline preload="none"></video><figcaption>Objaverse sample 01</figcaption></figure>
+          <figure class="video-card"><video src="mp4/004d02243a5b4117afc4baa45eb1eba0_interpolated.mp4" poster="mp4/posters/004d02243a5b4117afc4baa45eb1eba0_interpolated.webp" muted loop playsinline preload="none"></video><figcaption>Objaverse sample 02</figcaption></figure>
+          <figure class="video-card"><video src="mp4/backpack_003_interpolated.mp4" poster="mp4/posters/backpack_003_interpolated.webp" muted loop playsinline preload="none"></video><figcaption>Backpack 003</figcaption></figure>
+          <figure class="video-card"><video src="mp4/backpack_016_interpolated.mp4" poster="mp4/posters/backpack_016_interpolated.webp" muted loop playsinline preload="none"></video><figcaption>Backpack 016</figcaption></figure>
+          <figure class="video-card"><video src="mp4/chair_002_interpolated.mp4" poster="mp4/posters/chair_002_interpolated.webp" muted loop playsinline preload="none"></video><figcaption>Chair 002</figcaption></figure>
+          <figure class="video-card"><video src="mp4/JBL_Charge_Speaker_portable_wireless_wired_Green_interpolated.mp4" poster="mp4/posters/JBL_Charge_Speaker_portable_wireless_wired_Green_interpolated.webp" muted loop playsinline preload="none"></video><figcaption>JBL speaker</figcaption></figure>
+          <figure class="video-card"><video src="mp4/Mens_Authentic_Original_Boat_Shoe_in_Navy_Leather_RpT4GvUXRRP_interpolated.mp4" poster="mp4/posters/Mens_Authentic_Original_Boat_Shoe_in_Navy_Leather_RpT4GvUXRRP_interpolated.webp" muted loop playsinline preload="none"></video><figcaption>Boat shoe</figcaption></figure>
+          <figure class="video-card"><video src="mp4/Shaxon_100_Molded_Category_6_RJ45RJ45_Shielded_Patch_Cord_White.mp4" poster="mp4/posters/Shaxon_100_Molded_Category_6_RJ45RJ45_Shielded_Patch_Cord_White.webp" muted loop playsinline preload="none"></video><figcaption>Patch cord</figcaption></figure>
+          <figure class="video-card"><video src="mp4/Sootheze_Toasty_Orca_interpolated.mp4" poster="mp4/posters/Sootheze_Toasty_Orca_interpolated.webp" muted loop playsinline preload="none"></video><figcaption>Toasty orca</figcaption></figure>
+          <figure class="video-card"><video src="mp4/toy_animals_049_interpolated.mp4" poster="mp4/posters/toy_animals_049_interpolated.webp" muted loop playsinline preload="none"></video><figcaption>Toy animal</figcaption></figure>
+        </div>
+      </section>
+
+    </main>
+    <footer class="site-footer">
+      <section class="citation" aria-labelledby="citation-title">
+        <div class="citation-heading">
+          <h2 id="citation-title">BibTeX</h2>
+          <button class="copy-bibtex" type="button" aria-controls="bibtex-entry">Copy BibTeX</button>
+        </div>
+        <pre id="bibtex-entry"><code>@inproceedings{khafizov2026namvis,
+  title     = {{NAMVIS}: Next-Scale Autoregressive Multi-View Image Synthesis},
+  author    = {Khafizov, Ramil and Statsenko, Ilya and Rakhimov, Ruslan and Komarichev, Artem and Wonka, Peter and Burnaev, Evgeny},
+  booktitle = {Advances in Neural Information Processing Systems},
+  year      = {2026},
+  url       = {https://openreview.net/forum?id=dTzafRJOTR}
+}</code></pre>
+        <span class="copy-status" aria-live="polite"></span>
+      </section>
+      <p class="contact-line">For questions about this work, contact <a href="mailto:ramilaidarovich@gmail.com">Ramil Khafizov</a>.</p>
+      <p class="template-credit">Page layout adapted from the <a href="https://cat3d.github.io/">CAT3D project page</a>.</p>
+    </footer>
+    <script>
+      const copyButton = document.querySelector(".copy-bibtex");
+      const bibtexEntry = document.querySelector("#bibtex-entry code");
+      const copyStatus = document.querySelector(".copy-status");
+
+      const qualitativeSection = document.querySelector(".five-row-teaser");
+      const qualitativeRows = [...qualitativeSection.querySelectorAll(".teaser-row")];
+      const qualitativeToggle = qualitativeSection.querySelector(".qualitative-toggle");
+      const mobileQualitative = window.matchMedia("(max-width: 760px)");
+      const updateQualitativeToggle = () => {
+        const expanded = qualitativeSection.classList.contains("is-expanded");
+        const visibleByDefault = mobileQualitative.matches ? 1 : 2;
+        qualitativeRows.forEach((row, index) => {
+          row.setAttribute("aria-hidden", String(!expanded && index >= visibleByDefault));
+        });
+        qualitativeToggle.textContent = expanded
+          ? "Show fewer ↑"
+          : `Show ${qualitativeRows.length - visibleByDefault} more examples ↓`;
+        qualitativeToggle.setAttribute("aria-expanded", String(expanded));
+      };
+      qualitativeToggle.addEventListener("click", () => {
+        qualitativeSection.classList.toggle("is-expanded");
+        updateQualitativeToggle();
+      });
+      mobileQualitative.addEventListener("change", updateQualitativeToggle);
+      updateQualitativeToggle();
+
+      copyButton.addEventListener("click", async () => {
+        const text = bibtexEntry.textContent;
+        let copied = true;
+        try {
+          await navigator.clipboard.writeText(text);
+        } catch {
+          const fallback = document.createElement("textarea");
+          fallback.value = text;
+          fallback.setAttribute("readonly", "");
+          fallback.style.position = "fixed";
+          fallback.style.opacity = "0";
+          document.body.appendChild(fallback);
+          fallback.select();
+          copied = document.execCommand("copy");
+          fallback.remove();
+        }
+        copyStatus.textContent = copied ? "Copied to clipboard" : "Copy failed; select the text to copy it";
+        window.setTimeout(() => { copyStatus.textContent = ""; }, 1800);
+      });
+
+      const galleryVideos = [...document.querySelectorAll(".video-card video")];
+      const teaser = document.querySelector(".hero-teaser");
+      const teaserStage = teaser.querySelector(".teaser-stage");
+      const teaserVideos = [...teaser.querySelectorAll("video")];
+      const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+      let teaserNearViewport = false;
+
+      const syncTeaserSpeeds = () => {
+        if (!teaserVideos.every((video) => Number.isFinite(video.duration) && video.duration > 0)) return;
+        const referenceDuration = teaserVideos[0].duration;
+        const speedScale = 0.65;
+        teaserVideos.forEach((video) => {
+          const speed = (video.duration / referenceDuration) * speedScale;
+          video.defaultPlaybackRate = speed;
+          video.playbackRate = speed;
+        });
+      };
+
+      teaserVideos.forEach((video) => video.addEventListener("loadedmetadata", syncTeaserSpeeds));
+
+      const updateTeaserPlayback = () => {
+        const shouldPlay = teaserNearViewport && !prefersReducedMotion.matches && !document.hidden;
+        teaserVideos.forEach((video) => {
+          video.autoplay = shouldPlay;
+          if (shouldPlay) video.play().catch(() => {});
+          else video.pause();
+        });
+      };
+
+      let teaserModeTimer;
+      const startTeaserCycle = () => {
+        window.clearTimeout(teaserModeTimer);
+        if (prefersReducedMotion.matches) {
+          teaserStage.classList.add("is-grid");
+          return;
+        }
+
+        teaserStage.classList.remove("is-grid");
+        const holdFocus = () => {
+          teaserModeTimer = window.setTimeout(() => {
+            if (prefersReducedMotion.matches) return;
+            teaserStage.classList.add("is-grid");
+            teaserModeTimer = window.setTimeout(() => {
+              if (prefersReducedMotion.matches) return;
+              teaserStage.classList.remove("is-grid");
+              teaserModeTimer = window.setTimeout(holdFocus, 4000);
+            }, 4000);
+          }, 3000);
+        };
+        holdFocus();
+      };
+
+      startTeaserCycle();
+
+      if ("IntersectionObserver" in window) {
+        const teaserObserver = new IntersectionObserver(([entry]) => {
+          teaserNearViewport = entry.isIntersecting;
+          updateTeaserPlayback();
+        }, { rootMargin: "300px 0px", threshold: 0 });
+        teaserObserver.observe(teaser);
+      }
+      prefersReducedMotion.addEventListener("change", () => {
+        startTeaserCycle();
+        updateTeaserPlayback();
+      });
+      document.addEventListener("visibilitychange", updateTeaserPlayback);
+
+      galleryVideos.forEach((video) => {
+        video.defaultPlaybackRate = 0.2;
+        video.playbackRate = 0.2;
+        video.addEventListener("play", () => { video.playbackRate = 0.2; });
+      });
+
+      if ("IntersectionObserver" in window) {
+        const videoObserver = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            const video = entry.target;
+            if (entry.isIntersecting && !prefersReducedMotion.matches) {
+              video.autoplay = true;
+              video.play().catch(() => {});
+            } else {
+              video.autoplay = false;
+              video.pause();
+            }
+          });
+        }, { rootMargin: "300px 0px", threshold: 0.01 });
+
+        galleryVideos.forEach((video) => videoObserver.observe(video));
+      }
+    </script>
+  </body>
+</html>
