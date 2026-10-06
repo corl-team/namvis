@@ -11,7 +11,7 @@ Artem Komarichev<sup>1</sup>, Peter Wonka<sup>3</sup>, Evgeny Burnaev<sup>1,4</s
 
 *NeurIPS 2026*
 
-**[📄 Paper](https://openreview.net/forum?id=dTzafRJOTR) | [🌐 Project Page](https://corl-team.github.io/namvis/) | [🤗 Checkpoints](https://huggingface.co/smileyenot983/NAMVIS) | [🗂️ Dataset Part 1](https://huggingface.co/datasets/smileyenot983/objaversexl_sketchfab_pmap) | [🗂️ Dataset Part 2](https://huggingface.co/datasets/smileyenot983/objaversexl_github6.5_pmap)**
+**[📄 arXiv](https://arxiv.org/abs/2610.04722) | [🌐 Project Page](https://corl-team.github.io/namvis/) | [🤗 Checkpoints](https://huggingface.co/smileyenot983/NAMVIS) | [🗂️ Dataset Part 1](https://huggingface.co/datasets/smileyenot983/objaversexl_sketchfab_pmap) | [🗂️ Dataset Part 2](https://huggingface.co/datasets/smileyenot983/objaversexl_github6.5_pmap)**
 
 </div>
 
@@ -181,11 +181,14 @@ The implementation builds on [Infinity](https://github.com/FoundationVision/Infi
 
 ```bibtex
 @inproceedings{khafizov2026namvis,
-  title     = {{NAMVIS}: Next-Scale Autoregressive Multi-View Image Synthesis},
-  author    = {Khafizov, Ramil and Statsenko, Ilya and Rakhimov, Ruslan and Komarichev, Artem and Wonka, Peter and Burnaev, Evgeny},
-  booktitle = {Advances in Neural Information Processing Systems},
-  year      = {2026},
-  url       = {https://openreview.net/forum?id=dTzafRJOTR}
+  title         = {{NAMVIS}: Next-Scale Autoregressive Multi-View Image Synthesis},
+  author        = {Khafizov, Ramil and Statsenko, Ilya and Rakhimov, Ruslan and Komarichev, Artem and Wonka, Peter and Burnaev, Evgeny},
+  booktitle     = {Advances in Neural Information Processing Systems},
+  year          = {2026},
+  eprint        = {2610.04722},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CV},
+  url           = {https://arxiv.org/abs/2610.04722}
 }
 ```
 

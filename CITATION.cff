@@ -42,4 +42,8 @@ preferred-citation:
       given-names: Evgeny
   collection-title: "Advances in Neural Information Processing Systems"
   year: 2026
-  url: "https://openreview.net/forum?id=dTzafRJOTR"
+  url: "https://arxiv.org/abs/2610.04722"
+  identifiers:
+    - type: other
+      value: "arXiv:2610.04722"
+      description: "arXiv preprint"
