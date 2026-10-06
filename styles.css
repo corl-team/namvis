@@ -72,8 +72,6 @@ img { display: block; max-width: 100%; }
 .template-button.checkpoint-button:hover { background: #e3ebfa; }
 .template-button:not(:disabled):active { transform: translateY(0); box-shadow: 0 1px 2px rgba(30, 44, 71, .08); }
 .template-button:focus-visible, .copy-bibtex:focus-visible, .qualitative-toggle:focus-visible { outline: 3px solid #7898cb; outline-offset: 3px; }
-.pending-button:disabled { border-style: dashed; background: #f7f8fa; color: #747b88; box-shadow: none; cursor: not-allowed; }
-.button-note { padding: 1px 5px; border-radius: 4px; background: #e9ecf1; font-size: 10px; font-weight: 600; line-height: 1.5; }
 .tldr { max-width: 900px; margin: 20px auto 0; color: #444; font-size: 17px; line-height: 1.5; text-align: center; }
 .hero-teaser { max-width: var(--content-width); margin: 24px auto 0; }
 .teaser-columns, .teaser-example {
