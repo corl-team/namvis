@@ -15,7 +15,7 @@
     <meta property="og:image:alt" content="NAMVIS architecture overview" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image:alt" content="NAMVIS architecture overview" />
-    <link rel="stylesheet" href="styles.css?v=59" />
+    <link rel="stylesheet" href="styles.css?v=60" />
   </head>
   <body>
     <header class="hero">
@@ -50,58 +50,8 @@
           </nav>
         </div>
 
-        <section class="hero-teaser" aria-label="Sparse input views and generated novel views">
-          <div class="teaser-columns">
-            <span>Input views</span><span></span><span>Generated novel view</span>
-          </div>
-          <div class="teaser-stage">
-            <div class="teaser-mode teaser-featured" aria-hidden="true">
-              <article class="teaser-example">
-                <div class="teaser-inputs">
-                  <img src="images_teaser/0a426b0dea53487082d034208e2b3015/0000.webp" alt="Input view 1 of example 1" />
-                  <img src="images_teaser/0a426b0dea53487082d034208e2b3015/0001.webp" alt="Input view 2 of example 1" />
-                </div>
-                <span class="teaser-arrow" aria-hidden="true">→</span>
-                <div class="teaser-generated">
-                  <video src="video_teaser/0a426b0dea53487082d034208e2b3015/orbit_flythrough.mp4" poster="images_teaser/0a426b0dea53487082d034208e2b3015/0002.webp" muted loop playsinline preload="none"></video>
-                </div>
-              </article>
-            </div>
-            <div class="teaser-mode teaser-compact" aria-hidden="true">
-              <div class="teaser-compact-rows">
-                <article class="teaser-example">
-                  <div class="teaser-inputs">
-                    <img src="images_teaser/0a426b0dea53487082d034208e2b3015/0000.webp" alt="Input view 1 of example 1" />
-                    <img src="images_teaser/0a426b0dea53487082d034208e2b3015/0001.webp" alt="Input view 2 of example 1" />
-                  </div>
-                  <span class="teaser-arrow" aria-hidden="true">→</span>
-                  <div class="teaser-generated">
-                    <video src="video_teaser/0a426b0dea53487082d034208e2b3015/orbit_flythrough.mp4" poster="images_teaser/0a426b0dea53487082d034208e2b3015/0002.webp" muted loop playsinline preload="none"></video>
-                  </div>
-                </article>
-              <article class="teaser-example">
-                <div class="teaser-inputs">
-                  <img src="images_teaser/0bcbe949e6714aac9a196998200f7007/0000.webp" alt="Input view 1 of example 2" />
-                  <img src="images_teaser/0bcbe949e6714aac9a196998200f7007/0001.webp" alt="Input view 2 of example 2" />
-                </div>
-                <span class="teaser-arrow" aria-hidden="true">→</span>
-                <div class="teaser-generated">
-                  <video src="video_teaser/0bcbe949e6714aac9a196998200f7007/orbit_flythrough.mp4" poster="images_teaser/0bcbe949e6714aac9a196998200f7007/0002.webp" muted loop playsinline preload="none"></video>
-                </div>
-              </article>
-              <article class="teaser-example">
-                <div class="teaser-inputs">
-                  <img src="images_teaser/1b936fb17a154be68eed3d86efbcc9c9/0000.webp" alt="Input view 1 of example 3" />
-                  <img src="images_teaser/1b936fb17a154be68eed3d86efbcc9c9/0001.webp" alt="Input view 2 of example 3" />
-                </div>
-                <span class="teaser-arrow" aria-hidden="true">→</span>
-                <div class="teaser-generated">
-                  <video src="video_teaser/1b936fb17a154be68eed3d86efbcc9c9/orbit_flythrough.mp4" poster="images_teaser/1b936fb17a154be68eed3d86efbcc9c9/0002.webp" muted loop playsinline preload="none"></video>
-                </div>
-              </article>
-              </div>
-            </div>
-          </div>
+        <section class="hero-teaser" aria-label="NAMVIS showcase video">
+          <video class="hero-video" src="video_teaser/namvis-teaser-showcase-burger-hero-music1.mp4" controls muted loop playsinline preload="metadata" aria-label="NAMVIS teaser showcase with music"></video>
         </section>
         <p class="tldr"><strong>TL;DR:</strong> Given sparse posed views, NAMVIS autoregressively generates consistent novel views at unseen camera poses.</p>
         <section class="five-row-teaser" aria-labelledby="five-row-teaser-title">
@@ -389,23 +339,9 @@
 
       const galleryVideos = [...document.querySelectorAll(".video-card video")];
       const teaser = document.querySelector(".hero-teaser");
-      const teaserStage = teaser.querySelector(".teaser-stage");
       const teaserVideos = [...teaser.querySelectorAll("video")];
       const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-      let teaserNearViewport = false;
-
-      const syncTeaserSpeeds = () => {
-        if (!teaserVideos.every((video) => Number.isFinite(video.duration) && video.duration > 0)) return;
-        const referenceDuration = teaserVideos[0].duration;
-        const speedScale = 0.65;
-        teaserVideos.forEach((video) => {
-          const speed = (video.duration / referenceDuration) * speedScale;
-          video.defaultPlaybackRate = speed;
-          video.playbackRate = speed;
-        });
-      };
-
-      teaserVideos.forEach((video) => video.addEventListener("loadedmetadata", syncTeaserSpeeds));
+      let teaserNearViewport = !("IntersectionObserver" in window);
 
       const updateTeaserPlayback = () => {
         const shouldPlay = teaserNearViewport && !prefersReducedMotion.matches && !document.hidden;
@@ -416,31 +352,6 @@
         });
       };
 
-      let teaserModeTimer;
-      const startTeaserCycle = () => {
-        window.clearTimeout(teaserModeTimer);
-        if (prefersReducedMotion.matches) {
-          teaserStage.classList.add("is-grid");
-          return;
-        }
-
-        teaserStage.classList.remove("is-grid");
-        const holdFocus = () => {
-          teaserModeTimer = window.setTimeout(() => {
-            if (prefersReducedMotion.matches) return;
-            teaserStage.classList.add("is-grid");
-            teaserModeTimer = window.setTimeout(() => {
-              if (prefersReducedMotion.matches) return;
-              teaserStage.classList.remove("is-grid");
-              teaserModeTimer = window.setTimeout(holdFocus, 4000);
-            }, 4000);
-          }, 3000);
-        };
-        holdFocus();
-      };
-
-      startTeaserCycle();
-
       if ("IntersectionObserver" in window) {
         const teaserObserver = new IntersectionObserver(([entry]) => {
           teaserNearViewport = entry.isIntersecting;
@@ -448,10 +359,8 @@
         }, { rootMargin: "300px 0px", threshold: 0 });
         teaserObserver.observe(teaser);
       }
-      prefersReducedMotion.addEventListener("change", () => {
-        startTeaserCycle();
-        updateTeaserPlayback();
-      });
+      prefersReducedMotion.addEventListener("change", updateTeaserPlayback);
+      updateTeaserPlayback();
       document.addEventListener("visibilitychange", updateTeaserPlayback);
 
       galleryVideos.forEach((video) => {

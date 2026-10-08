@@ -74,28 +74,10 @@ img { display: block; max-width: 100%; }
 .template-button:focus-visible, .copy-bibtex:focus-visible, .qualitative-toggle:focus-visible { outline: 3px solid #7898cb; outline-offset: 3px; }
 .tldr { max-width: 900px; margin: 20px auto 0; color: #444; font-size: 17px; line-height: 1.5; text-align: center; }
 .hero-teaser { max-width: var(--content-width); margin: 24px auto 0; }
-.teaser-columns, .teaser-example {
-  display: grid;
-  grid-template-columns: minmax(0, 1.6fr) 18px minmax(0, 5fr);
-  gap: 8px;
-  align-items: center;
-}
-.teaser-columns { padding: 0 0 8px; color: #444; font-size: 15px; font-weight: 700; text-align: center; }
-.teaser-stage { position: relative; height: 460px; }
-.teaser-mode { position: absolute; inset: 0; display: grid; }
-.teaser-featured { z-index: 1; opacity: 1; transform: scale(1.025) translateY(0); transition: opacity 850ms ease, transform 850ms cubic-bezier(.2, .7, .2, 1); }
-.teaser-compact { z-index: 0; grid-template-rows: minmax(0, 1fr); opacity: 0; transform: scale(.96) translateY(14px); transition: opacity 850ms ease, transform 850ms cubic-bezier(.2, .7, .2, 1); }
-.teaser-stage.is-grid .teaser-featured { opacity: 0; transform: translateY(-33.333%) scale(.88); pointer-events: none; }
-.teaser-stage.is-grid .teaser-compact { z-index: 2; opacity: 1; transform: scale(1) translateY(0); }
-.teaser-featured .teaser-example { min-height: 0; grid-template-columns: minmax(0, 2.4fr) 20px minmax(0, 5fr); }
-.teaser-compact-rows { display: grid; height: 100%; min-height: 0; grid-template-rows: repeat(3, minmax(0, 1fr)); gap: 10px; }
-.teaser-example { min-height: 0; align-items: stretch; }
+.hero-video { display: block; width: 100%; height: auto; background: #fff; }
 .teaser-inputs { display: grid; width: 100%; height: 100%; min-height: 0; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: center; justify-items: center; gap: 6px; }
 .teaser-inputs img { width: 100%; max-height: 100%; aspect-ratio: 1; object-fit: contain; }
 .teaser-arrow { display: flex; align-self: stretch; align-items: center; justify-content: center; color: #555; font-size: 22px; font-weight: 500; }
-.teaser-generated { display: flex; width: 100%; height: 100%; min-height: 0; align-self: stretch; align-items: center; justify-content: center; overflow: hidden; }
-.teaser-generated video { display: block; width: 100%; height: 100%; min-height: 0; object-fit: contain; background: #fff; transform: scale(1.12); }
-.teaser-featured .teaser-generated video { width: auto; height: min(100%, 165px); max-width: 100%; }
 .five-row-teaser { max-width: var(--content-width); margin: 32px auto 0; }
 .five-row-teaser h2 { margin: 0 0 12px; font-size: clamp(21px, 2.4vw, 30px); font-weight: 600; text-align: center; }
 .five-row-teaser h2 span { color: #777; }
@@ -204,10 +186,6 @@ tr:last-child td { border-bottom: 0; }
   .method-points { gap: 24px; }
   .citation pre { padding: 13px; font-size: 13px; }
   .render-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .teaser-columns, .teaser-example { grid-template-columns: minmax(0, 1.8fr) 16px minmax(0, 4.8fr); gap: 6px; }
-  .teaser-stage { height: clamp(300px, 55vw, 390px); }
-  .teaser-featured .teaser-example { grid-template-columns: minmax(0, 2.1fr) 18px minmax(0, 4fr); gap: 6px; }
-  .teaser-featured .teaser-generated video { height: min(100%, 140px); }
   .five-row-teaser .teaser-row { grid-template-columns: 1fr; gap: 7px; }
   .five-row-teaser:not(.is-expanded) .teaser-row:nth-child(n + 2) { max-height: 0; padding-top: 0; padding-bottom: 0; opacity: 0; pointer-events: none; }
   .five-row-teaser.is-expanded .teaser-row { max-height: 700px; }
@@ -226,13 +204,10 @@ tr:last-child td { border-bottom: 0; }
   .render-grid { grid-template-columns: 1fr; }
   .method-points { grid-template-columns: 1fr; gap: 18px; }
   .section-heading h2 { font-size: 24px; }
-  .teaser-columns { font-size: 14px; }
   .five-row-teaser .teaser-row { padding: 2px 2px; }
   .five-row-teaser .teaser-inputs, .five-row-teaser .teaser-outputs { gap: 4px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .template-button, .copy-bibtex, .qualitative-toggle { transition: none; }
   .template-button:not(:disabled):hover { transform: none; }
-  .teaser-featured { display: none; transition: none; }
-  .teaser-compact { z-index: 2; opacity: 1; transform: none; transition: none; }
 }
