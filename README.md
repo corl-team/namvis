@@ -11,7 +11,7 @@ Artem Komarichev<sup>1</sup>, Peter Wonka<sup>3</sup>, Evgeny Burnaev<sup>1,4</s
 
 *NeurIPS 2026*
 
-**[📄 arXiv](https://arxiv.org/abs/2610.04722) | [🌐 Project Page](https://corl-team.github.io/namvis/) | [🤗 Checkpoints](https://huggingface.co/smileyenot983/NAMVIS) | [🗂️ Dataset Part 1](https://huggingface.co/datasets/smileyenot983/objaversexl_sketchfab_pmap) | [🗂️ Dataset Part 2](https://huggingface.co/datasets/smileyenot983/objaversexl_github6.5_pmap)**
+**[📄 arXiv](https://arxiv.org/abs/2610.04722) | [🌐 Project Page](https://corl-team.github.io/namvis/) | [🤗 Checkpoints](https://huggingface.co/smileyenot983/NAMVIS) | [🗂️ Dataset Part 1](https://huggingface.co/datasets/smileyenot983/objaversexl_sketchfab_pmap) | [🗂️ Dataset Part 2](https://huggingface.co/datasets/smileyenot983/objaversexl_github6.5_pmap) | [🐦 Twitter thread](https://x.com/RamilKhafizov11/status/2108127219910377983)**
 
 </div>
 
